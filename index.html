@@ -1,90 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-    }
-    #time {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-    }
-    .time {
-      padding: 16px;
-      font-size: 24px;
-    }
-    .counter {
-      display: flex;
-      justify-content: center;
-      font-size: 44px;
-    }
-  </style>
-  <title>Rolandz</title>
-</head>
-<body>
-  <div>
-    <div id="time">
-        <div class="time">days: <div class="counter" id="days"></div></div>
-        <div class="time">hours: <div class="counter" id="hours"></div></div>
-        <div class="time">minutes: <div class="counter" id="minutes"></div></div>
-        <div class="time">seconds: <div class="counter" id="seconds"></div></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        animation: colorchange 10s;
+        -webkit-animation: colorchange 10s;
+      }
+      #time {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+      .time {
+        padding: 16px;
+        font-size: 24px;
+      }
+      .counter {
+        display: flex;
+        justify-content: center;
+        font-size: 44px;
+      }
+
+      @keyframes colorchange {
+        0% {
+          background: white;
+        }
+        25% {
+          background: cyan;
+        }
+        50% {
+          background: orange;
+        }
+        75% {
+          background: green;
+        }
+        100% {
+          background: white;
+        }
+      }
+
+      @-webkit-keyframes colorchange /* Safari and Chrome - necessary duplicate */ {
+        0% {
+          background: white;
+        }
+        25% {
+          background: cyan;
+        }
+        50% {
+          background: orange;
+        }
+        75% {
+          background: green;
+        }
+        100% {
+          background: white;
+        }
+      }
+
+      @keyframes beat {
+        to {
+          transform: scale(1.2);
+        }
+      }
+
+      #seconds {
+        animation: beat 0.3s infinite alternate;
+        transform-origin: center;
+      }
+
+      .time {
+        position: relative;
+        -webkit-animation-name: shake;
+        animation-name: shake;
+        -webkit-animation-duration: 7.5s;
+        animation-duration: 7.5s;
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+      }
+      @-webkit-keyframes shake {
+        0%,
+        100% {
+          left: 0px;
+        }
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+          left: 10px;
+        }
+        20%,
+        40%,
+        60%,
+        80% {
+          left: -10px;
+        }
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          left: 0px;
+        }
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+          left: 10px;
+        }
+        20%,
+        40%,
+        60%,
+        80% {
+          left: -10px;
+        }
+      }
+    </style>
+    <title>Rolandz</title>
+  </head>
+  <body>
+    <div>
+      <div id="time">
+        <div class="time">
+          days:
+          <div class="counter" id="days"></div>
+        </div>
+        <div class="time">
+          hours:
+          <div class="counter" id="hours"></div>
+        </div>
+        <div class="time">
+          minutes:
+          <div class="counter" id="minutes"></div>
+        </div>
+        <div class="time">
+          seconds:
+          <div class="counter" id="seconds"></div>
+        </div>
       </div>
       <video controls autoplay="autoplay" loop width="480">
-        <source src="./dans.mp4" type="video/mp4">
+        <source src="./dans.mp4" type="video/mp4" />
         Sorry, your browser doesn't support embedded videos.
       </video>
-  </div>
+    </div>
 
-  <script>
-    const days = document.querySelector('#days')
-    const hours = document.querySelector('#hours')
-    const minutes = document.querySelector('#minutes')
-    const seconds = document.querySelector('#seconds')
+    <script>
+      const days = document.querySelector('#days')
+      const hours = document.querySelector('#hours')
+      const minutes = document.querySelector('#minutes')
+      const seconds = document.querySelector('#seconds')
 
-    function getClosesFriday () {
-    const currentTime = new Date()
-    currentTime.setHours(14)
-    currentTime.setMinutes(0)
+      function getClosesFriday() {
+        const currentTime = new Date()
+        currentTime.setHours(14)
+        currentTime.setMinutes(0)
 
+        if (currentTime.getDay() === 5) {
+          return currentTime
+        }
 
-    if (currentTime.getDay() === 5) {
-      return currentTime
-    }
+        const date = currentTime.getDate()
+        const diff = Math.abs(currentTime.getDay() - 5)
+        currentTime.setDate(date + diff)
 
-    const date = currentTime.getDate()
-    const diff = Math.abs(currentTime.getDay() - 5)
-    currentTime.setDate(date + diff)
+        return currentTime
+      }
 
-    return currentTime
-  }
+      const endOfHackathon = getClosesFriday().getTime()
+      const second = 1000
+      const minute = second * 60
+      const hour = minute * 60
+      const day = hour * 24
 
-  const endOfHackathon = getClosesFriday().getTime()
-  const second = 1000
-  const minute = second * 60
-  const hour = minute * 60
-  const day = hour * 24
+      function updateTime() {
+        const dateNow = new Date().getTime()
+        const timeLeft = endOfHackathon - dateNow
 
-  function updateTime() {
-    const dateNow = new Date().getTime();
-    const timeLeft = endOfHackathon - dateNow;
+        days.textContent = Math.floor(timeLeft / day)
+        hours.textContent = Math.floor((timeLeft % day) / hour)
+        minutes.textContent = Math.floor((timeLeft % hour) / minute)
+        seconds.textContent = Math.floor((timeLeft % minute) / second)
+      }
 
-    days.textContent = Math.floor(timeLeft / day)
-    hours.textContent = Math.floor((timeLeft % day) / hour)
-    minutes.textContent = Math.floor((timeLeft % hour) / minute)
-    seconds.textContent = Math.floor((timeLeft % minute) / second)
-  }
+      updateTime()
+      setInterval(updateTime, second / 4)
 
-  updateTime()
-  setInterval(updateTime, second / 4)
-
-  </script>
-</body>
+      function fn() {}
+    </script>
+  </body>
 </html>
